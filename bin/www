@@ -1,0 +1,28 @@
+/* 
+Separating the server from API declaration for decoupling.
+*/
+require("dotenv").config();
+const { createServer } = require("http");
+
+const connect = require("../database");
+const app = require("../app");
+
+const port = parseInt(process.env.port || "5000");
+
+const databaseConnection = connect();
+
+databaseConnection
+  .on("error", console.log)
+  .on("disconnected", connect)
+  .once("open", startServer);
+
+function startServer() {
+  const server = createServer(app);
+
+  server.listen(port);
+
+  server.on("error", (err) => console.log(err));
+  server.on("listening", () =>
+    console.log(`Server listening on port ${port} `)
+  );
+}

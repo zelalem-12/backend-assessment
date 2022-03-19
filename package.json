@@ -1,0 +1,20 @@
+{
+  "name": "pencil-technololgy",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "cross-env NODE_ENV=development nodemon ./bin/www",
+    "seed": "cross-env NODE_ENV=development MONGODBURL=$DBURI node database/seeders"
+  },
+  "dependencies": {
+    "commander": "^9.1.0",
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.0.0",
+    "express": "~4.16.1",
+    "googleapis": "^97.0.0",
+    "mongoose": "^6.2.7"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
