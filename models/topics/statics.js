@@ -42,25 +42,28 @@ async function getTopics(topic) {
           let: { topic: "$_id" },
           pipeline: [
             { $match: { $expr: { $in: ["$$topic", "$annotations"] } } },
-            { $project: { annotations: 0 } },
           ],
           as: "question",
         },
       },
       { $match: { $expr: { $gte: [{ $size: "$question" }, 1] } } },
       { $unwind: { path: "$question" } },
-      { $group: { _id: "$question._id" } },
+      {
+        $group: {
+          _id: "$question._id",
+          annotations: { $first: "$question.annotations" },
+        },
+      },
       { $sort: { _id: 1 } },
-      { $group: { _id: null, questions: { $push: "$_id" } } },
-      { $project: { _id: 0 } },
+      {
+        $project: {
+          _id: 0,
+          questionNumber: "$_id",
+          annotations: 1,
+        },
+      },
     ]);
-
-    if (subTopicQuestion.length) {
-      const { questions } = subTopicQuestion[0];
-      return questions || [];
-    }
-
-    return [];
+    return subTopicQuestion;
   } catch (err) {
     throw {
       message: err.message || "An error occured while getting topics",

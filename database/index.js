@@ -16,24 +16,27 @@ function connect() {
     MONGODBURL,
     MONGO_PASSWORD,
     MONGO_USER,
-    // ATLASUSERNAME,
-    // ATLASPASSWORD,
-    // DATABASENAME,
+    ATLASUSERNAME,
+    ATLASPASSWORD,
+    DATABASENAME,
   } = process.env;
   const options = {
     keepAlive: 1,
     useNewUrlParser: true,
     useUnifiedTopology: true,
   };
-  //const mongoAtlasUrl = `mongodb+srv://${ATLASUSERNAME}:${ATLASPASSWORD}@cluster0.q6x2i.mongodb.net/${DATABASENAME}?retryWrites=true&w=majority`;
-  const MONGODB_ATLAS_URL =
-    "mongodb+srv://zelalem-12:puE8WhzsDaCjfgrS@cluster0.q6x2i.mongodb.net/topic_tree?retryWrites=true&w=majoritY";
+
+  let connectingDBURL = MONGODBURL;
+  if (ATLASUSERNAME && ATLASPASSWORD && DATABASENAME) {
+    connectingDBURL = `mongodb+srv://${ATLASUSERNAME}:${ATLASPASSWORD}@cluster0.q6x2i.mongodb.net/${DATABASENAME}?retryWrites=true&w=majoritY`;
+    //const mongoAtlasUrl = `mongodb+srv://${ATLASUSERNAME}:${ATLASPASSWORD}@cluster0.q6x2i.mongodb.net/${DATABASENAME}?retryWrites=true&w=majority`;
+  }
 
   if (MONGO_USER && MONGO_PASSWORD) {
     options.auth = { user: MONGO_USER, password: MONGO_PASSWORD };
   }
 
-  mongoose.connect(MONGODB_ATLAS_URL, options);
+  mongoose.connect(connectingDBURL, options);
 
   return mongoose.connection;
 }
