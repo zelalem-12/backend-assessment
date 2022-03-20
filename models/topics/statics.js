@@ -27,14 +27,30 @@ async function bulkyImportTopics(topics) {
 async function getTopics(topic) {
   const Topics = this.model(TOPICS);
 
-  if (!topic || typeof topic !== "string") return [];
+  // parenthesis is a special char and we need to remove  it from the query as well as from the path field before matching
+  const parenthesisIgnoerdTopic = topic.replace(/[()]/g, "");
 
-  let queryTopic = `,${topic},`;
-  if (topic.includes(",")) queryTopic = `,'${topic}',`;
+  let parentTopic = `,${parenthesisIgnoerdTopic},`;
+  if (parenthesisIgnoerdTopic.includes(","))
+    parentTopic = `,'${parenthesisIgnoerdTopic}',`;
 
   try {
     const subTopicQuestion = await Topics.aggregate([
-      { $match: { path: { $regex: queryTopic, $options: "i" } } },
+      {
+        $project: {
+          path: {
+            $function: {
+              body: function (path) {
+                if (!path) return path;
+                return path.replace(/[()]/g, "");
+              },
+              args: ["$path"],
+              lang: "js",
+            },
+          },
+        },
+      },
+      { $match: { path: { $regex: parentTopic, $options: "i" } } },
       { $project: { path: 0 } },
       {
         $lookup: {
