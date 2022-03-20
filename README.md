@@ -22,7 +22,7 @@ DBURI='Your Databse URL' npm run seed
 
 To seed the database with new Dataset
 
-Update the [questions](https://github.com/zelalem-12/backend-assessment/blob/master/dataSheets/questions.csv) and [topics](https://github.com/zelalem-12/backend-assessment/blob/master/dataSheets/topics.csv) csv run files and run the following command
+Update the [questions](https://github.com/zelalem-12/backend-assessment/blob/master/dataSheets/questions.csv) and [topics](https://github.com/zelalem-12/backend-assessment/blob/master/dataSheets/topics.csv) csv files and then run the following command
 
 ```sh
 DBURI='Your Databse URL' npm run seed

@@ -29,7 +29,6 @@ function connect() {
   let connectingDBURL = MONGODBURL;
   if (ATLASUSERNAME && ATLASPASSWORD && DATABASENAME) {
     connectingDBURL = `mongodb+srv://${ATLASUSERNAME}:${ATLASPASSWORD}@cluster0.q6x2i.mongodb.net/${DATABASENAME}?retryWrites=true&w=majoritY`;
-    //const mongoAtlasUrl = `mongodb+srv://${ATLASUSERNAME}:${ATLASPASSWORD}@cluster0.q6x2i.mongodb.net/${DATABASENAME}?retryWrites=true&w=majority`;
   }
 
   if (MONGO_USER && MONGO_PASSWORD) {
