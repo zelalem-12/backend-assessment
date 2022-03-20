@@ -38,18 +38,15 @@ async function getTopics(topic) {
     const subTopicQuestion = await Topics.aggregate([
       {
         $project: {
-          path: {
-            $function: {
-              body: function (path) {
-                if (!path) return path;
-                return path.replace(/[()]/g, "");
-              },
-              args: ["$path"],
-              lang: "js",
-            },
-          },
+          path: { $replaceAll: { input: "$path", find: "(", replacement: "" } },
         },
       },
+      {
+        $project: {
+          path: { $replaceAll: { input: "$path", find: ")", replacement: "" } },
+        },
+      },
+
       { $match: { path: { $regex: parentTopic, $options: "i" } } },
       { $project: { path: 0 } },
       {
