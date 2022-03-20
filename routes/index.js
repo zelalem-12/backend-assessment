@@ -1,5 +1,5 @@
-const { getSubTopicQuestions } = require("../controllers");
-
 module.exports = (app) => {
-  app.get("/search", getSubTopicQuestions);
+  app.get("/", (erq, res) => {
+    res.render("index", { title: "Pencil Backend Assignment " });
+  });
 };

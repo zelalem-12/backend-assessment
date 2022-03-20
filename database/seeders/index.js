@@ -16,7 +16,6 @@ const initializeSeeders = async () => {
     files
       .filter((fileName) => fileName.match(/\.(seeder.js)$/i))
       .forEach((fileName) => {
-        console.log({ fileName });
         const seeder = require(path.resolve(__dirname, fileName));
         seeders[seeder.order] = seeder;
       });

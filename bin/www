@@ -7,7 +7,7 @@ const { createServer } = require("http");
 const connect = require("../database");
 const app = require("../app");
 
-const port = parseInt(process.env.port || "5000");
+const port = normalizePort(process.env.PORT || "5000");
 
 const databaseConnection = connect();
 
@@ -25,4 +25,18 @@ function startServer() {
   server.on("listening", () =>
     console.log(`Server listening on port ${port} `)
   );
+}
+
+function normalizePort(val) {
+  var port = parseInt(val, 10);
+
+  if (isNaN(port)) {
+    return val;
+  }
+
+  if (port >= 0) {
+    return port;
+  }
+
+  return false;
 }
