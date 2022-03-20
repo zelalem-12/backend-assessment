@@ -13,7 +13,7 @@ async function getSubTopicQuestions(req, res) {
     }
 
     const queryTopic = topicName.replaceAll(/\s+/g, " ").trim();
-    const subTopicQUestions = await Topics.getTopics(queryTopic);
+    const subTopicQUestions = await Topics.getSubTopicsQuestion(queryTopic);
     res.send(subTopicQUestions);
   } catch (err) {
     res

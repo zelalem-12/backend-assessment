@@ -24,11 +24,25 @@ async function bulkyImportTopics(topics) {
   }
 }
 
-async function getTopics(topic) {
+async function getSubTopicsQuestion(topic) {
   const Topics = this.model(TOPICS);
 
-  // parenthesis is a special char and we need to remove  it from the query as well as from the path field before matching
-  const parenthesisIgnoerdTopic = topic.replace(/[()]/g, "");
+  // Removing possible sppecial characters that may found on topic.
+  const specialCharacters = [".", "(", ")"];
+
+  const projections = specialCharacters.map((character) => ({
+    $project: {
+      path: {
+        $replaceAll: {
+          input: "$path",
+          find: character,
+          replacement: "",
+        },
+      },
+    },
+  }));
+
+  const parenthesisIgnoerdTopic = topic.replace(/[().]+/g, "");
 
   let parentTopic = `,${parenthesisIgnoerdTopic},`;
   if (parenthesisIgnoerdTopic.includes(","))
@@ -36,17 +50,7 @@ async function getTopics(topic) {
 
   try {
     const subTopicQuestion = await Topics.aggregate([
-      {
-        $project: {
-          path: { $replaceAll: { input: "$path", find: "(", replacement: "" } },
-        },
-      },
-      {
-        $project: {
-          path: { $replaceAll: { input: "$path", find: ")", replacement: "" } },
-        },
-      },
-
+      ...projections,
       { $match: { path: { $regex: parentTopic, $options: "i" } } },
       { $project: { path: 0 } },
       {
@@ -86,6 +90,6 @@ async function getTopics(topic) {
 }
 
 module.exports = {
-  getTopics,
+  getSubTopicsQuestion,
   bulkyImportTopics,
 };
