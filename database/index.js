@@ -31,7 +31,7 @@ function connect() {
     options.auth = { user: MONGO_USER, password: MONGO_PASSWORD };
   }
 
-  mongoose.connect(MONGODBURL, options);
+  mongoose.connect(mongoAtlasUrl, options);
 
   return mongoose.connection;
 }
