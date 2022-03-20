@@ -5,8 +5,6 @@ const { Command } = require("commander");
 const readdir = require("util").promisify(fs.readdir);
 const connect = require("../");
 
-console.log(typeof connect);
-
 const program = new Command();
 program.version("0.8.0");
 

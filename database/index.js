@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const fs = require("fs");
 const path = require("path");
 
-if (process.env.NODE_ENV === "development") mongoose.set("debug", true);
+// if (process.env.NODE_ENV === "development") mongoose.set("debug", true);
 
 const models = path.join(__dirname, "../models");
 
@@ -12,20 +12,26 @@ fs.readdirSync(models)
   .forEach((file) => require(path.join(models, file)));
 
 function connect() {
-  const mongoUser = process.env.MONGO_USER || null;
-  const mongoPassword = process.env.MONGO_PASSWORD || null;
-  const mongoURL = process.env.MONGODBURL;
+  const {
+    MONGODBURL,
+    MONGO_PASSWORD,
+    MONGO_USER,
+    ATLASUSERNAME,
+    ATLASPASSWORD,
+    DATABASENAME,
+  } = process.env;
   const options = {
     keepAlive: 1,
     useNewUrlParser: true,
     useUnifiedTopology: true,
   };
+  const mongoAtlasUrl = `mongodb+srv://${ATLASUSERNAME}:${ATLASPASSWORD}@cluster0.q6x2i.mongodb.net/${DATABASENAME}?retryWrites=true&w=majority`;
 
-  if (mongoUser && mongoPassword) {
-    options.auth = { user: mongoUser, password: mongoPassword };
+  if (MONGO_USER && MONGO_PASSWORD) {
+    options.auth = { user: MONGO_USER, password: MONGO_PASSWORD };
   }
 
-  mongoose.connect(mongoURL, options);
+  mongoose.connect(MONGODBURL, options);
 
   return mongoose.connection;
 }
