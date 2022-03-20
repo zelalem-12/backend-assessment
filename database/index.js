@@ -16,9 +16,9 @@ function connect() {
     MONGODBURL,
     MONGO_PASSWORD,
     MONGO_USER,
-    ATLASUSERNAME,
-    ATLASPASSWORD,
-    DATABASENAME,
+    ATLASUSERNAME = "zelalem - 12",
+    ATLASPASSWORD = "DHxfixh4zTeueDm4",
+    DATABASENAME = "topic_tree",
   } = process.env;
   const options = {
     keepAlive: 1,
