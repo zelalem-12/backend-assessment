@@ -51,7 +51,14 @@ async function getSubTopicsQuestion(topic) {
   try {
     const subTopicQuestion = await Topics.aggregate([
       ...projections,
-      { $match: { path: { $regex: parentTopic, $options: "i" } } },
+      {
+        $match: {
+          $or: [
+            { path: { $regex: parentTopic, $options: "i" } },
+            { _id: topic },
+          ],
+        },
+      },
       { $project: { path: 0 } },
       {
         $lookup: {
